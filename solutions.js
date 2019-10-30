@@ -1,4 +1,47 @@
 
+
+/*
+~~~Word Count ~~~~
+*/
+
+/* 
+Word count: split + length
+O(n) time: for loop through whole string
+O(1) space: inWord and wordCount both take up constant space
+*/
+const wordCount = (str) => {
+    return str.split(" ").length
+}
+
+
+
+/* 
+Word count: count number of times a word 'starts'
+O(n) time: for loop through whole string
+O(1) space: inWord and wordCount both take up constant space
+*/
+const wordCount2 = (str) => {
+    let inWord = false
+    let wordCount = 0
+    for (let i = 0  ; i< str.length  ;i++ ) {
+        if (str[i] === " "){
+            inWord = false
+        } else if (!inWord){ {
+            wordCount ++
+            inWord = true
+            
+        }
+    }
+    return wordCount
+    }
+}
+
+
+/*
+~~~ Is Palindrome~~~
+*/
+
+
 /* is palindrome:  method 1: reverse string and compare to original, using js-methods 
 O(n) time: split, reverse, and join all take n steps
 O(n) space: split creates a new array of length n, and join creates a new string of length n
@@ -65,6 +108,140 @@ const isPalindrome3  = (str) => {
     }
     // if we get through the loop without returning false, all corresponding characters must be equal, so return true
     return true
+}
+
+
+/*
+max number in array: greedy approach
+O(n) time
+O(1) space
+*/
+
+const maxNumberInArray = (numArray) =>{
+    let maxNumberSoFar = -Infinity;
+    numArray.forEach((number)=>{
+        if (number > maxNumberSoFar){
+            maxNumberSoFar = number
+        }
+    })
+    return maxNumberSoFar
+}
+
+
+/*
+median: sort and then find middle number
+O(nlogn) time: sorting
+O(1) space
+*/
+const median = (numberArray) =>{
+    numberArray.sort((a, b) => a - b)
+    const len = numberArray.length
+    if (len % 2 === 0){
+        const value1 = numberArray[len/2 -1]
+        const value2 = numberArray[len/2]
+        return (value1 + value2) /2
+
+    } else {
+        
+        return numberArray[ (len -1 )/2]
+    }
+}
+
+
+
+/*
+~~~ has duplicates ~~~
+*/
+
+/*
+use a hash
+O(n) time: for loop
+O(n) space: hash grows with size of input array
+*/
+const hasDuplicates = (numberArray) =>{
+    // track seen numbers in a hash for constant lookup
+    const numbersSeenSoFar = {};
+    // iterate through each number
+    for (let i=0 ; i < numberArray.length  ;i++ ) {
+        let currentNumber = numberArray[i];
+        // if number is already in our hash, it's been seen, and we have a duplicate
+        if (numbersSeenSoFar[currentNumber]){
+            return true
+        }
+        // add number to hash (value "true" is just a placeholder)
+        numbersSeenSoFar[currentNumber] = true;
+    }
+    // if we survive the loop, there are no duplicates, and we can return true
+    return false
+}
+/* brute force: check every pair
+O(n^2) time: nested for loop
+O(1) space
+*/
+const hasDuplicates2 = (numberArray) => {
+    for (let i = 0 ; i < numberArray.length  ;i++ ) {
+        for (let j=i+1 ; j<numberArray.length  ;j++ ) {
+            if (numberArray[i] === numberArray[j]){
+                return true
+            }
+        }
+    }
+    return false
+}
+
+/* sort first
+O(nlogn) time: sorting
+O(1): space
+*/
+const hasDuplicates3 = (numberArray) => {
+    numberArray.sort((a, b) => a - b)
+    for (let i = 1 ; i< numberArray.length  ; i++ ) {
+        // compare each number to the previous one
+        if (numberArray[i] === numberArray [i-1]){
+            return true
+        }
+    }
+    return false
+}
+
+
+
+
+const topIMDBScore = (moviesArray) =>{
+    let topScoreSoFar = 0;
+    let topMovieSoFar = ""
+    moviesArray.forEach((movieStr)=>{
+        let currentScore = getIMDBScore(movieStr);
+        if (currentScore > topScoreSoFar){
+            topScoreSoFar = currentScore
+            topMovieSoFar = movieStr
+        }
+    })
+    return topScoreSoFar
+}
+
+const topThree = (numArray) =>{
+    let third = -Infinity;
+    let second = -Infinity;
+    let first = -Infinity;
+
+    numArray.forEach((number)=>{
+        if (number <= third) {
+
+        } else if ( number > first){
+            third = second
+            second = first
+            first = number
+        } else if ( number  > second) {
+            third = second
+            second = number
+        } else {
+            number = third
+        }
+    })
+
+    return [ third, second , first].filter((num)=> num !== -Infinity)
+
 }
 
 /*
@@ -152,28 +329,6 @@ const indexOfNumber =  (numArray, targetNum) =>{
     return smallerNumbersCount
 }
 
-
-/*
-inputs array of numbers, returns boolean indicating whether a number duplicates
-O(n) time
-O(n) space - new hash contains n elements, in the worst case
-*/
-const hasDuplicates = (numberArray) =>{
-    // track seen numbers in a hash for constant lookup
-    const numbersSeenSoFar = {};
-    // iterate through each number
-    for (let i=0 ; i < numberArray.length  ;i++ ) {
-        let currentNumber = numberArray[i];
-        // if number is already in our hash, it's been seen, and we have a duplicate
-        if (numbersSeenSoFar[currentNumber]){
-            return true
-        }
-        // add number to hash (value "true" is just a placeholder)
-        numbersSeenSoFar[currentNumber] = true;
-    }
-    // if we survive the loop, there are no duplicates, and we can return true
-    return true
-}
 
 
 /*
